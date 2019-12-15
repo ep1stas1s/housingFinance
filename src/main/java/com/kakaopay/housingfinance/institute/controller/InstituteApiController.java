@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/api/institutes")
-public class InstituteController {
+public class InstituteApiController {
 
     private final InstituteService instituteService;
 
-    public InstituteController(InstituteService instituteService) {
+    public InstituteApiController(InstituteService instituteService) {
         this.instituteService = instituteService;
     }
 
