@@ -6,7 +6,9 @@ import com.kakaopay.housingfinance.credit.domain.repository.MonthlyCreditReposit
 import com.kakaopay.housingfinance.credit.service.CreditService;
 import com.kakaopay.housingfinance.credit.service.dto.DetailYearlyCreditInfoDto;
 import com.kakaopay.housingfinance.credit.service.dto.InstituteCreditDto;
+import com.kakaopay.housingfinance.credit.service.dto.TopAmountByYearDto;
 import com.kakaopay.housingfinance.credit.service.dto.YearlyCreditStatisticsDto;
+import com.kakaopay.housingfinance.credit.service.exception.NotExistYearlyCreditException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,6 @@ import static java.util.stream.Collectors.*;
 @Slf4j
 @Service
 public class CreditServiceImpl implements CreditService {
-    private static final int NONE = 0;
-
     private final MonthlyCreditRepository monthlyCreditRepository;
 
     public CreditServiceImpl(MonthlyCreditRepository monthlyCreditRepository) {
@@ -81,5 +81,14 @@ public class CreditServiceImpl implements CreditService {
         return yearlyCredits.stream()
                 .map(yearlyCredit -> new InstituteCreditDto(yearlyCredit.getInstitute().getName(), yearlyCredit.getDetailAmount()))
                 .collect(toList());
+    }
+
+    @Override
+    public TopAmountByYearDto findTopAmountInstituteByYear() {
+        YearlyCredit yearlyCredit = findAllYearlyCreditInfo().stream()
+                .max(Comparator.comparing(YearlyCredit::getDetailAmount))
+                .orElseThrow(NotExistYearlyCreditException::new);
+
+        return TopAmountByYearDto.from(yearlyCredit);
     }
 }

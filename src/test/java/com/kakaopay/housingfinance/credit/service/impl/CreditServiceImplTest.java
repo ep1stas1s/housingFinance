@@ -2,6 +2,7 @@ package com.kakaopay.housingfinance.credit.service.impl;
 
 import com.kakaopay.housingfinance.AbstractInitializedService;
 import com.kakaopay.housingfinance.credit.service.CreditService;
+import com.kakaopay.housingfinance.credit.service.dto.TopAmountByYearDto;
 import com.kakaopay.housingfinance.credit.service.dto.YearlyCreditStatisticsDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,12 @@ class CreditServiceImplTest extends AbstractInitializedService {
     void findAllYearlyDetailCredit() {
         YearlyCreditStatisticsDto allDetailCreditByYear = creditService.findAllYearlyDetailCredit();
         assertThat(allDetailCreditByYear.size() > 1).isTrue();
+    }
+
+    @Test
+    void findTopAmountInstituteByYear() {
+        TopAmountByYearDto topAmountInstituteByYear = creditService.findTopAmountInstituteByYear();
+        assertThat(topAmountInstituteByYear.getYear()).isEqualTo(2014);
+        assertThat(topAmountInstituteByYear.getInstituteName()).isEqualTo("주택도시기금1");
     }
 }
