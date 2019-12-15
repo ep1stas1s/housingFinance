@@ -1,6 +1,7 @@
 package com.kakaopay.housingfinance.institute.service.impl;
 
 import com.kakaopay.housingfinance.credit.domain.MonthlyCredit;
+import com.kakaopay.housingfinance.credit.service.CreditService;
 import com.kakaopay.housingfinance.institute.domain.Institute;
 import com.kakaopay.housingfinance.institute.domain.repository.InstituteRepository;
 import com.kakaopay.housingfinance.institute.service.InstituteService;
@@ -30,11 +31,14 @@ public class InstituteServiceImpl implements InstituteService {
     private static final int NONE = 0;
 
     private final InstituteRepository instituteRepository;
+    private final CreditService creditService;
     private final ResourceLoader resourceLoader;
 
     public InstituteServiceImpl(InstituteRepository instituteRepository,
+                                CreditService creditService,
                                 ResourceLoader resourceLoader) {
         this.instituteRepository = instituteRepository;
+        this.creditService = creditService;
         this.resourceLoader = resourceLoader;
     }
 
@@ -51,6 +55,9 @@ public class InstituteServiceImpl implements InstituteService {
         IntegerRowCsvData integerRowCsvData = new IntegerRowCsvData(resource);
 
         List<Institute> savedInstitutes = instituteRepository.saveAll(initInstitutes(integerRowCsvData.getHeaders()));
+        List<MonthlyCredit> monthlyCredits = convertCsvToMonthlyCredit(savedInstitutes, integerRowCsvData);
+
+        creditService.saveAll(monthlyCredits);
     }
 
     private boolean hasContents() {
