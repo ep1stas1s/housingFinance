@@ -1,0 +1,66 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:snippets: ../../../build/generated-snippets
+
+= API Guide
+
+== 1. Institute
+
+=== 1.1. 초기 데이터 저장
+
+==== Request curl
+
+include::{snippets}/institutes/post-init/curl-request.adoc[]
+
+==== Request body
+
+include::{snippets}/institutes/post-init/request-body.adoc[]
+
+==== Response result
+
+include::{snippets}/institutes/post-init/http-response.adoc[]
+
+=== 1.2. 주택금융 공급기관 조회 (GET)
+
+==== Request curl
+
+include::{snippets}/institutes/get-list/curl-request.adoc[]
+
+==== Response body
+
+include::{snippets}/institutes/get-list/http-response.adoc[]
+
+== 2. Credit
+
+=== 2.1. 연도별 각 금융기관의 지원금액 합계
+
+==== 2.1.1. Request curl
+
+include::{snippets}/credit/get-total/curl-request.adoc[]
+
+==== 2.1.2. Response body
+
+include::{snippets}/credit/get-total/http-response.adoc[]
+
+=== 2.2. 각 연도별 지원금액 중 가장 큰 금액의 기관명 조회
+
+==== 2.2.1. Request curl
+
+include::{snippets}/credit/get-top/curl-request.adoc[]
+
+==== 2.2.2. Response body
+
+include::{snippets}/credit/get-top/http-response.adoc[]
+
+=== 2.3. 전체 연도에서 지원금액 평균 중 가장 큰 금액과 작은 금액 조회
+
+==== 2.3.1. Request curl
+
+include::{snippets}/credit/get-avg-min-max/curl-request.adoc[]
+
+==== 2.3.2. Response body
+
+include::{snippets}/credit/get-avg-min-max/http-response.adoc[]

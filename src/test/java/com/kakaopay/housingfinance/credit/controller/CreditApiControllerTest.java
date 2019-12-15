@@ -9,10 +9,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
 
 class CreditApiControllerTest extends AbstractWebTestClient {
 
-    private static final String API_CREDIT = "/api/credit";
+    private static final String API_CREDIT = "/api/credits";
 
     @Test
     @DisplayName("연도별 금융기관의 지원금액 합계를 반환")
@@ -20,6 +22,10 @@ class CreditApiControllerTest extends AbstractWebTestClient {
         YearlyCreditStatisticsDto yearlyCreditStatisticsDto = get(API_CREDIT + "/total")
                 .expectStatus().isOk()
                 .expectBody(YearlyCreditStatisticsDto.class)
+                .consumeWith(document("credit/get-total/",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ))
                 .returnResult()
                 .getResponseBody();
 
@@ -32,6 +38,10 @@ class CreditApiControllerTest extends AbstractWebTestClient {
         TopAmountByYearDto topAmountByYearDto = get(API_CREDIT + "/top")
                 .expectStatus().isOk()
                 .expectBody(TopAmountByYearDto.class)
+                .consumeWith(document("credit/get-top/",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ))
                 .returnResult()
                 .getResponseBody();
 
@@ -45,6 +55,10 @@ class CreditApiControllerTest extends AbstractWebTestClient {
         MinMaxCreditDto minMaxCreditDto = get(API_CREDIT + "/{instituteId}/avg-min-max", 8)
                 .expectStatus().isOk()
                 .expectBody(MinMaxCreditDto.class)
+                .consumeWith(document("credit/get-avg-min-max/",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ))
                 .returnResult()
                 .getResponseBody();
 

@@ -6,8 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
 
-class InstituteControllerTest extends AbstractWebTestClient {
+class InstituteApiControllerTest extends AbstractWebTestClient {
     private static final String API_INSTITUTES = "/api/institutes";
 
     @Test
@@ -16,6 +18,10 @@ class InstituteControllerTest extends AbstractWebTestClient {
         InstituteInfosDto instituteInfosDto = get(API_INSTITUTES)
                 .expectStatus().isOk()
                 .expectBody(InstituteInfosDto.class)
+                .consumeWith(document("institutes/get-list/",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ))
                 .returnResult()
                 .getResponseBody();
 
