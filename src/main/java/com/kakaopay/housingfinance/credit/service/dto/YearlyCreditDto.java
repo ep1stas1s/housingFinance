@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-// TODO: 2019-12-15 Rename...
 @Getter
 @ToString
 @NoArgsConstructor
