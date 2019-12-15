@@ -10,6 +10,7 @@ import com.kakaopay.housingfinance.credit.service.exception.NotExistYearlyCredit
 import com.kakaopay.housingfinance.credit.service.exception.NotFoundAverageCreditException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -35,6 +36,7 @@ public class CreditServiceImpl implements CreditService {
      * @return saved monthlyCredits list
      */
     @Override
+    @Transactional
     public List<MonthlyCredit> saveAll(List<MonthlyCredit> monthlyCredits) {
         return monthlyCreditRepository.saveAll(monthlyCredits);
     }

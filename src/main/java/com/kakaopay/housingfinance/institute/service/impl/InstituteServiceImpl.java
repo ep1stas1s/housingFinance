@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,6 +48,7 @@ public class InstituteServiceImpl implements InstituteService {
      *
      * @param fileInfoDto file name
      */
+    @Transactional
     public void initData(FileInfoDto fileInfoDto) {
         if (hasContents()) {
             return;
