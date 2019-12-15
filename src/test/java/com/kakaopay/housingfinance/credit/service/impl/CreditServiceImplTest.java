@@ -2,6 +2,7 @@ package com.kakaopay.housingfinance.credit.service.impl;
 
 import com.kakaopay.housingfinance.AbstractInitializedService;
 import com.kakaopay.housingfinance.credit.service.CreditService;
+import com.kakaopay.housingfinance.credit.service.dto.MinMaxCreditDto;
 import com.kakaopay.housingfinance.credit.service.dto.TopAmountByYearDto;
 import com.kakaopay.housingfinance.credit.service.dto.YearlyCreditStatisticsDto;
 import org.junit.jupiter.api.Test;
@@ -27,5 +28,11 @@ class CreditServiceImplTest extends AbstractInitializedService {
         TopAmountByYearDto topAmountInstituteByYear = creditService.findTopAmountInstituteByYear();
         assertThat(topAmountInstituteByYear.getYear()).isEqualTo(2014);
         assertThat(topAmountInstituteByYear.getInstituteName()).isEqualTo("주택도시기금1");
+    }
+
+    @Test
+    void findAverageMinNadMax() {
+        MinMaxCreditDto averageMinNadMax = creditService.findAverageMinNadMax(8);
+        assertThat(averageMinNadMax.getInstituteName()).isEqualTo("외환은행");
     }
 }

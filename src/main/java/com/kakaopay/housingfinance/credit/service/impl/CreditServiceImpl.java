@@ -1,14 +1,13 @@
 package com.kakaopay.housingfinance.credit.service.impl;
 
 import com.kakaopay.housingfinance.credit.domain.MonthlyCredit;
+import com.kakaopay.housingfinance.credit.domain.YearlyAverageCredit;
 import com.kakaopay.housingfinance.credit.domain.YearlyCredit;
 import com.kakaopay.housingfinance.credit.domain.repository.MonthlyCreditRepository;
 import com.kakaopay.housingfinance.credit.service.CreditService;
-import com.kakaopay.housingfinance.credit.service.dto.DetailYearlyCreditInfoDto;
-import com.kakaopay.housingfinance.credit.service.dto.InstituteCreditDto;
-import com.kakaopay.housingfinance.credit.service.dto.TopAmountByYearDto;
-import com.kakaopay.housingfinance.credit.service.dto.YearlyCreditStatisticsDto;
+import com.kakaopay.housingfinance.credit.service.dto.*;
 import com.kakaopay.housingfinance.credit.service.exception.NotExistYearlyCreditException;
+import com.kakaopay.housingfinance.credit.service.exception.NotFoundAverageCreditException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +20,8 @@ import static java.util.stream.Collectors.*;
 @Slf4j
 @Service
 public class CreditServiceImpl implements CreditService {
+    private static final int NONE = 0;
+
     private final MonthlyCreditRepository monthlyCreditRepository;
 
     public CreditServiceImpl(MonthlyCreditRepository monthlyCreditRepository) {
@@ -90,5 +91,24 @@ public class CreditServiceImpl implements CreditService {
                 .orElseThrow(NotExistYearlyCreditException::new);
 
         return TopAmountByYearDto.from(yearlyCredit);
+    }
+
+    @Override
+    public MinMaxCreditDto findAverageMinNadMax(long instituteId) {
+        List<YearlyAverageCredit> allYearlyAverageCredit = findAllYearlyCredit(instituteId);
+        if (isEmptyRow(allYearlyAverageCredit)) {
+            log.info("instituteId : {}, 해당 기관의 정보가 존재하지 않습니다.", instituteId);
+            throw new NotFoundAverageCreditException();
+        }
+
+        return MinMaxCreditDto.from(allYearlyAverageCredit);
+    }
+
+    private List<YearlyAverageCredit> findAllYearlyCredit(long instituteId) {
+        return monthlyCreditRepository.findAllYearlyCredit(instituteId);
+    }
+
+    private boolean isEmptyRow(List<YearlyAverageCredit> allYearlyCredit) {
+        return allYearlyCredit.size() == NONE;
     }
 }
